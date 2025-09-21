@@ -13,9 +13,12 @@
       <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
       <Extensions>inf;inv;inx;mof;mc;</Extensions>
     </Filter>
-    <Filter Include="WDF Framework Files">
+    <Filter Include="WDF Functions">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Callout Functions">
+      <UniqueIdentifier>{816f51c8-99ba-41ae-ba9f-9816bda23ccc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -27,28 +30,40 @@
     </Inf>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WdfDriver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolTags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Device.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Driver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Public.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Queue.h">
+    <ClInclude Include="CommonHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Device.c">
-      <Filter>WDF Framework Files</Filter>
+    <ClCompile Include="Device.cpp">
+      <Filter>WDF Functions</Filter>
     </ClCompile>
-    <ClCompile Include="DriverEntry.c">
-      <Filter>WDF Framework Files</Filter>
+    <ClCompile Include="DriverEntry.cpp">
+      <Filter>WDF Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Queue.c">
-      <Filter>WDF Framework Files</Filter>
+    <ClCompile Include="IoQueue.cpp">
+      <Filter>WDF Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

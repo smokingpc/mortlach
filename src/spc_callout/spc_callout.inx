@@ -27,6 +27,13 @@ HKR,,SilentInstall,,1
 HKR,,DeviceCharacteristics,0x10001,0x100 ;FLG_ADDREG_BINVALUETYPE | FLG_ADDREG_TYPE_MULTI_SZ, FILE_DEVICE_SECURE_OPEN
 HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GA;;;LS)";/// Permit Generic All access to System, Built-in Admin, and Local System.
 
+[WFPCalloutClassRegToDelete]
+HKR,,,0
+HKR,,Icon,,
+HKR,,SilentInstall,,
+HKR,,DeviceCharacteristics
+HKR,,Security,,
+
 ; ================= SourceDisk section =====================
 [SourceDisksNames.$ARCH$]
 1 = %WFPCalloutDriverDiskId%,,,""
@@ -49,27 +56,30 @@ CopyFiles  = WFPCalloutDriver.DriverFiles
 AddService = %WFPCalloutDriverServiceName%,,WFPCalloutDriver.Service
 
 [DefaultUninstall.nt$ARCH$]
-DelFiles = WFPCalloutDriver.DriverFiles
-DelReg   = WFPCalloutClassReg
+DelFiles = WFPCalloutDriver.DriverFilesToDelete
+DelReg   = WFPCalloutClassRegToDelete
 
 [DefaultUninstall.nt$ARCH$.Services]
 DelService = %WFPCalloutDriverServiceName%,0x200 ;/// SPSVCINST_STOPSERVICE
 
 [WFPCalloutDriver.DriverFiles]
-   spc_callout.sys,,,0x00000040;/// COPYFLG_OVERWRITE_OLDER_ONLY
+spc_callout.sys,,,0x00000040;/// COPYFLG_OVERWRITE_OLDER_ONLY
+
+[WFPCalloutDriver.DriverFilesToDelete]
+spc_callout.sys,,,0x00000040;/// COPYFLG_OVERWRITE_OLDER_ONLY
 
 ;*****************************************
 ; Coinstaller Section
 ;*****************************************
-[WFPCalloutDriver.NT.CoInstallers]
-AddReg    = WFPCalloutDriver.CoInstaller.AddReg
-CopyFiles = WFPCalloutDriver.CoInstaller.CopyFiles
+;[WFPCalloutDriver.NT.CoInstallers]
+;AddReg    = WFPCalloutDriver.CoInstaller.AddReg
+;CopyFiles = WFPCalloutDriver.CoInstaller.CopyFiles
 
-[WFPCalloutDriver.CoInstaller.AddReg]
-HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+;[WFPCalloutDriver.CoInstaller.AddReg]
+;HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
 
-[WFPCalloutDriver.CoInstaller.CopyFiles]
-WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+;[WFPCalloutDriver.CoInstaller.CopyFiles]
+;WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
 
 ;*****************************************
 ; Service Section
