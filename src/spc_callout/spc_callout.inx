@@ -1,0 +1,96 @@
+;
+; spc_wfp_callout.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=WFPCALLOUTS
+ClassGuid={57465043-616C-6C6F-7574-5F636C617373}
+Provider=%ManufacturerName%
+CatalogFile=spc_callout.cat
+DriverVer= 09/21/2025, 0.0.0.5 ; TODO: set DriverVer in stampinf property pages
+LegacyUninstall=1
+
+[DestinationDirs]
+DefaultDestDir = 12
+WFPCallout_CoInstaller_CopyFiles = 12
+
+; ================= Class section =====================
+
+[ClassInstall32.nt$ARCH$]
+Addreg=WFPCalloutClassReg
+
+[WFPCalloutClassReg]
+HKR,,,0,%WFPCalloutsClassName%
+HKR,,Icon,,-5
+HKR,,SilentInstall,,1
+HKR,,DeviceCharacteristics,0x10001,0x100 ;FLG_ADDREG_BINVALUETYPE | FLG_ADDREG_TYPE_MULTI_SZ, FILE_DEVICE_SECURE_OPEN
+HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GA;;;LS)";/// Permit Generic All access to System, Built-in Admin, and Local System.
+
+; ================= SourceDisk section =====================
+[SourceDisksNames.$ARCH$]
+1 = %WFPCalloutDriverDiskId%,,,""
+
+[SourceDisksFiles.$ARCH$]
+spc_callout.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+;*****************************************
+; Install Section
+;*****************************************
+
+;WFP callout driver is easier to installed by DefaultInstall.
+;We don't want to add pseudo device by devcon.exe
+[DefaultInstall.nt$ARCH$]
+OptionDesc = %WFPCalloutDriverDescription%
+CopyFiles  = WFPCalloutDriver.DriverFiles
+
+[DefaultInstall.nt$ARCH$.Services]
+AddService = %WFPCalloutDriverServiceName%,,WFPCalloutDriver.Service
+
+[DefaultUninstall.nt$ARCH$]
+DelFiles = WFPCalloutDriver.DriverFiles
+DelReg   = WFPCalloutClassReg
+
+[DefaultUninstall.nt$ARCH$.Services]
+DelService = %WFPCalloutDriverServiceName%,0x200 ;/// SPSVCINST_STOPSERVICE
+
+[WFPCalloutDriver.DriverFiles]
+   spc_callout.sys,,,0x00000040;/// COPYFLG_OVERWRITE_OLDER_ONLY
+
+;*****************************************
+; Coinstaller Section
+;*****************************************
+[WFPCalloutDriver.NT.CoInstallers]
+AddReg    = WFPCalloutDriver.CoInstaller.AddReg
+CopyFiles = WFPCalloutDriver.CoInstaller.CopyFiles
+
+[WFPCalloutDriver.CoInstaller.AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[WFPCalloutDriver.CoInstaller.CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+;*****************************************
+; Service Section
+;*****************************************
+; -------------- SmokingPC WFP callouts driver install sections
+[WFPCalloutDriver.Service]
+DisplayName    = %WFPCalloutDriverServiceName%
+Description    = %WFPCalloutDriverServiceDescription%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 1               ; SERVICE_SYSTEM_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\spc_callout.sys
+LoadOrderGroup = NDIS                                                                           ;/// Load immediately after TCPIP.sys
+Dependencies   = TCPIP
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName = "Roy Wang(SmokingPC)"
+WFPCalloutsClassName = "WFP Callout Drivers"
+WFPCalloutDriverDeviceDescription  = "SmokingPC WFP Callout Device"
+WFPCalloutDriverDescription        = "SmokingPC WFP Callout Driver"
+WFPCalloutDriverServiceName        = "SmokingPC WFP Callouts"
+WFPCalloutDriverServiceDescription = "SmokingPC WFP Service - Callouts"
+WFPCalloutDriverDiskId             = "SmokingPC WFP Callout Installation Disk"
