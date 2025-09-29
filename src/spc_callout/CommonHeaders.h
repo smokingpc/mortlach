@@ -1,10 +1,16 @@
 #pragma once
+#include <initguid.h>
 #include <wdm.h>
 #include <wdf.h>
-#include <initguid.h>
-#include "device.h"
+#include <ndis.h>
+#include <fwpmk.h>
+#include <fwpsk.h>
+//#include <Wdmsec.h>
 
+#include "Constant.h"
+#include "Enum.h"
+#include "Struct.h"
+#include "DeviceAndQueueContext.h"
+#include "GUIDs.h"
 #include "SpcKernelLib.h"
-#include "WdfDriver.h"
-#include "DeviceInterface.h"
-#include "Device.h"
+

@@ -1,0 +1,19 @@
+#pragma once
+typedef struct _DEVICE_CONTEXT
+{
+    WDFQUEUE IoQueue;
+    WDFDEVICE Device;
+
+    HANDLE WfpEngine;
+    FWPM_PROVIDER   Provider;
+    FWPS_CALLOUT    CalloutFwps[MAX_CALLOUTS];
+    FWPM_CALLOUT    CalloutFwpm[MAX_CALLOUTS];
+
+
+} DEVICE_CONTEXT, * PDEVICE_CONTEXT;
+WDF_DECLARE_CONTEXT_TYPE_WITH_NAME(DEVICE_CONTEXT, DeviceGetContext)
+
+typedef struct _QUEUE_CONTEXT {
+    ULONG PlaceHolder;
+} QUEUE_CONTEXT, * PQUEUE_CONTEXT;
+WDF_DECLARE_CONTEXT_TYPE_WITH_NAME(QUEUE_CONTEXT, QueueGetContext)

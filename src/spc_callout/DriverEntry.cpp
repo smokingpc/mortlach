@@ -1,68 +1,23 @@
 #include "CommonHeaders.h"
+#include "Wfp_Callout_Functions/Callout_Functions.h"
+#include "DriverEntry.h"
 
-#ifdef ALLOC_PRAGMA
-#pragma alloc_text (INIT, DriverEntry)
-#pragma alloc_text (PAGE, WfpCallout_EvtDeviceAdd)
-#pragma alloc_text (PAGE, WfpCallout_EvtDriverContextCleanup)
-#endif
+//For easier debugging
+WDFDRIVER DriverHandle;
+WDFDEVICE DeviceHandle;
+PDEVICE_CONTEXT DevCtx = nullptr;
 
 EXTERN_C_START
-NTSTATUS
-WfpCallout_EvtDeviceAdd(
-    _In_    WDFDRIVER       Driver,
-    _Inout_ PWDFDEVICE_INIT DeviceInit
-    )
-/*++
-Routine Description:
-
-    EvtDeviceAdd is called by the framework in response to AddDevice
-    call from the PnP manager. We create and initialize a device object to
-    represent a new instance of the device.
-
-Arguments:
-
-    Driver - Handle to a framework driver object created in DriverEntry
-
-    DeviceInit - Pointer to a framework-allocated WDFDEVICE_INIT structure.
-
-Return Value:
-
-    NTSTATUS
-
---*/
+VOID 
+WdfEvt_DriverUnload(_In_ WDFDRIVER Driver)
 {
-    NTSTATUS status;
-
     UNREFERENCED_PARAMETER(Driver);
-
-    PAGED_CODE();
-
-    status = CreateWdfDevice(DeviceInit);
-
-    return status;
 }
 
 VOID
-WfpCallout_EvtDriverContextCleanup(
-    _In_ WDFOBJECT DriverObject
-    )
-/*++
-Routine Description:
-
-    Free all the resources allocated in DriverEntry.
-
-Arguments:
-
-    DriverObject - handle to a WDF Driver object.
-
-Return Value:
-
-    VOID.
-
---*/
+WdfEvt_DriverContextCleanup(_In_ WDFOBJECT DriverObject)
 {
     UNREFERENCED_PARAMETER(DriverObject);
-
     PAGED_CODE();
 }
 
@@ -77,17 +32,52 @@ DriverEntry(
     WDF_OBJECT_ATTRIBUTES attributes;
 
     WDF_OBJECT_ATTRIBUTES_INIT(&attributes);
-    attributes.EvtCleanupCallback = WfpCallout_EvtDriverContextCleanup;
+    attributes.EvtCleanupCallback = WdfEvt_DriverContextCleanup;
 
-    WDF_DRIVER_CONFIG_INIT(&config,
-        WfpCallout_EvtDeviceAdd);
+    //enforce this driver allocated pools should be NonPagedPoolNx automatically. 
+    ExInitializeDriverRuntime(DrvRtPoolNxOptIn);
+
+    //to build a KMDF driver as a legacy driver, do it by this way.
+    WDF_DRIVER_CONFIG_INIT(&config, WDF_NO_EVENT_CALLBACK);
+    config.DriverInitFlags |= WdfDriverInitNonPnpDriver;    //no need to go thru PnpManager. this is for legacy driver only.
+    config.EvtDriverUnload = WdfEvt_DriverUnload;
 
     status = WdfDriverCreate(DriverObject,
         RegistryPath,
         &attributes,
         &config,
-        WDF_NO_HANDLE);
+        &DriverHandle);
 
+    if (NT_SUCCESS(status))
+    {
+        PWDFDEVICE_INIT dev_init = nullptr;
+        Wdf_CreateDeviceInit(dev_init, DriverHandle);
+        if (nullptr == dev_init)
+        {
+            status = STATUS_MEMORY_NOT_ALLOCATED;
+            goto END;
+        }
+
+        status = Wdf_CreateDevice(DeviceHandle, dev_init);
+
+        if (!NT_SUCCESS(status))
+        {
+            //PrintError("[CALLOUT] WfpCallout_CreateDevice() failed(%X)\n", status);
+            goto END;
+        }
+    }
+    else
+    {
+        //PrintError("[CALLOUT] WdfDriverCreate() failed(%X)\n", status);
+        goto END;
+    }
+    
+    PDEVICE_CONTEXT devctx = DeviceGetContext(DeviceHandle);
+    status = Wfp_SetupCallouts(devctx);
+    if (!NT_SUCCESS(status))
+        Wfp_TeardownCallouts(devctx);
+
+END:
     return status;
 }
 EXTERN_C_END

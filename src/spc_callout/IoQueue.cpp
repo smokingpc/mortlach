@@ -1,18 +1,14 @@
 #include "CommonHeaders.h"
+#include "DriverEntry.h"
 
-#ifdef ALLOC_PRAGMA
-#pragma alloc_text (PAGE, WfpCallout_QueueInitialize)
-#endif
-
-EXTERN_C_START
 NTSTATUS
-WfpCallout_QueueInitialize(
-    _In_ WDFDEVICE Device
+Wdf_QueueInitialize(
+    _In_ WDFDEVICE device
     )
 {
-    WDFQUEUE queue;
     NTSTATUS status;
-    WDF_IO_QUEUE_CONFIG queueConfig;
+    WDF_IO_QUEUE_CONFIG config;
+    PDEVICE_CONTEXT devctx = DeviceGetContext(device);
 
     PAGED_CODE();
 
@@ -22,25 +18,25 @@ WfpCallout_QueueInitialize(
     // other queues get dispatched here.
     //
     WDF_IO_QUEUE_CONFIG_INIT_DEFAULT_QUEUE(
-         &queueConfig,
+         &config,
         WdfIoQueueDispatchParallel
         );
 
-    queueConfig.EvtIoDeviceControl = WfpCallout_EvtIoDeviceControl;
-    queueConfig.EvtIoStop = WfpCallout_EvtIoStop;
+    config.EvtIoDeviceControl = WdfEvt_IoDeviceControl;
+    config.EvtIoStop = WdfEvt_IoStop;
 
     status = WdfIoQueueCreate(
-                 Device,
-                 &queueConfig,
+                 device,
+                 &config,
                  WDF_NO_OBJECT_ATTRIBUTES,
-                 &queue
-                 );
+                 &devctx->IoQueue);
 
     return status;
 }
 
+EXTERN_C_START
 VOID
-WfpCallout_EvtIoDeviceControl(
+WdfEvt_IoDeviceControl(
     _In_ WDFQUEUE Queue,
     _In_ WDFREQUEST Request,
     _In_ size_t OutputBufferLength,
@@ -58,7 +54,7 @@ WfpCallout_EvtIoDeviceControl(
 }
 
 VOID
-WfpCallout_EvtIoStop(
+WdfEvt_IoStop(
     _In_ WDFQUEUE Queue,
     _In_ WDFREQUEST Request,
     _In_ ULONG ActionFlags

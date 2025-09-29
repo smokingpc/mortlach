@@ -13,16 +13,16 @@
       <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
       <Extensions>inf;inv;inx;mof;mc;</Extensions>
     </Filter>
-    <Filter Include="WDF Functions">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Callout Functions">
       <UniqueIdentifier>{816f51c8-99ba-41ae-ba9f-9816bda23ccc}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <Filter Include="Wfp_Callout_Functions">
+      <UniqueIdentifier>{a005dded-ac07-42f0-9326-a618fc611178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WDF_Functions">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Inf Include="spc_callout.inx">
@@ -30,10 +30,10 @@
     </Inf>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WdfDriver.h">
+    <ClInclude Include="DriverEntry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeviceInterface.h">
+    <ClInclude Include="GUIDs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PoolTags.h">
@@ -48,22 +48,31 @@
     <ClInclude Include="Constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Device.h">
+    <ClInclude Include="DeviceAndQueueContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CommonHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Wfp_Callout_Functions\Callout_Functions.h">
+      <Filter>Wfp_Callout_Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Device.cpp">
-      <Filter>WDF Functions</Filter>
+      <Filter>WDF_Functions</Filter>
     </ClCompile>
     <ClCompile Include="DriverEntry.cpp">
-      <Filter>WDF Functions</Filter>
+      <Filter>WDF_Functions</Filter>
     </ClCompile>
     <ClCompile Include="IoQueue.cpp">
-      <Filter>WDF Functions</Filter>
+      <Filter>WDF_Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Wfp_Callout_Functions\Callout_Setup_and_Teardown.cpp">
+      <Filter>Wfp_Callout_Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerAndPnp.cpp">
+      <Filter>WDF_Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

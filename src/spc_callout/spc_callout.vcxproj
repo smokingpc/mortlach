@@ -35,22 +35,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="DriverEntry.cpp" />
     <ClCompile Include="IoQueue.cpp" />
+    <ClCompile Include="PowerAndPnp.cpp" />
+    <ClCompile Include="Wfp_Callout_Functions\Callout_Setup_and_Teardown.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonHeaders.h" />
     <ClInclude Include="Constant.h" />
-    <ClInclude Include="Device.h" />
+    <ClInclude Include="DeviceAndQueueContext.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Struct.h" />
-    <ClInclude Include="WdfDriver.h" />
+    <ClInclude Include="DriverEntry.h" />
     <ClInclude Include="PoolTags.h" />
-    <ClInclude Include="DeviceInterface.h" />
+    <ClInclude Include="GUIDs.h" />
+    <ClInclude Include="Wfp_Callout_Functions\Callout_Functions.h" />
   </ItemGroup>
   <ItemGroup>
     <Inf Include="spc_callout.inx" />
@@ -190,10 +190,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -207,10 +208,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -224,10 +226,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -241,10 +244,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -258,10 +262,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -275,10 +280,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
@@ -292,10 +298,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
@@ -309,10 +316,11 @@
       <PrecompiledHeaderOutputFile />
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <PreprocessorDefinitions>NDIS_SUPPORT_NDIS650;NDIS650;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\output\$(Platform)\$(Configuration)\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpcKernelLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SpcKernelLib.lib;wdmsec.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
