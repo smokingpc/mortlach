@@ -2,9 +2,9 @@
 
 static NTSTATUS WdfEvt_DeviceD0Entry(
     WDFDEVICE Device,
-    WDF_POWER_DEVICE_STATE PreviousState
-)
+    WDF_POWER_DEVICE_STATE PreviousState)
 {
+    CFuncLog flog(__FUNCTION__);
     UNREFERENCED_PARAMETER(Device);
     UNREFERENCED_PARAMETER(PreviousState);
 
@@ -12,9 +12,9 @@ static NTSTATUS WdfEvt_DeviceD0Entry(
 }
 static NTSTATUS WdfEvt_DeviceD0Exit(
     WDFDEVICE Device,
-    WDF_POWER_DEVICE_STATE PreviousState
-)
+    WDF_POWER_DEVICE_STATE PreviousState)
 {
+    CFuncLog flog(__FUNCTION__);
     UNREFERENCED_PARAMETER(Device);
     UNREFERENCED_PARAMETER(PreviousState);
     return STATUS_SUCCESS;
@@ -22,6 +22,7 @@ static NTSTATUS WdfEvt_DeviceD0Exit(
 
 void Wdf_SetupPowerAndPnp(_In_ PWDFDEVICE_INIT dev_init)
 {
+    CFuncLog flog(__FUNCTION__);
     WDF_PNPPOWER_EVENT_CALLBACKS  pnp_cb = { 0 };
 
     WDF_PNPPOWER_EVENT_CALLBACKS_INIT(&pnp_cb);

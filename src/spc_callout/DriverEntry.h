@@ -19,20 +19,13 @@ EVT_WDF_IO_QUEUE_IO_DEVICE_CONTROL WdfEvt_IoDeviceControl;
 EVT_WDF_IO_QUEUE_IO_STOP WdfEvt_IoStop;
 EXTERN_C_END
 
-NTSTATUS Wdf_QueueInitialize(_In_ WDFDEVICE Device );
-
-//WDF device create
-__inline PWDFDEVICE_INIT
-Wdf_CreateDeviceInit(_Out_ PWDFDEVICE_INIT dev_init, _In_ WDFDRIVER driver)
-{
-    //DeviceInit object is created in AddDevice() event but legacy has no AddDevice event.
-    //so we have to create it by ourself.
-    dev_init = WdfControlDeviceInitAllocate(driver, &SDDL_DEVOBJ_KERNEL_ONLY);
-    return dev_init;
-}
+NTSTATUS Wdf_QueueInitialize(_In_ WDFDEVICE Device, _Inout_ WDFQUEUE *ioqueue);
 
 NTSTATUS Wdf_CreateDevice(_Out_ WDFDEVICE& device, _In_ PWDFDEVICE_INIT dev_init);
-NTSTATUS InitDeviceContext(_Inout_ PDEVICE_CONTEXT devctx);
+void InitDeviceContext(
+    _In_ WDFDEVICE& device,
+    _In_ WDFQUEUE& ioqueue,
+    _In_ PDEVICE_CONTEXT devctx);
 
 //WDF Power and Pnp functions
 void Wdf_SetupPowerAndPnp(_In_ PWDFDEVICE_INIT dev_init);

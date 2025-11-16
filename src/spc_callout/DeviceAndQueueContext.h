@@ -1,15 +1,11 @@
 #pragma once
 typedef struct _DEVICE_CONTEXT
 {
+    WDFDEVICE WdfDevice;
+    PDEVICE_OBJECT WdmDevObj;
     WDFQUEUE IoQueue;
-    WDFDEVICE Device;
-
-    HANDLE WfpEngine;
-    FWPM_PROVIDER   Provider;
-    FWPS_CALLOUT    CalloutFwps[MAX_CALLOUTS];
-    FWPM_CALLOUT    CalloutFwpm[MAX_CALLOUTS];
-
-
+    HANDLE BfeStateHandle;  //BFE state subscription handle
+    WFP_KERNEL_CONTEXT WfpCtx;
 } DEVICE_CONTEXT, * PDEVICE_CONTEXT;
 WDF_DECLARE_CONTEXT_TYPE_WITH_NAME(DEVICE_CONTEXT, DeviceGetContext)
 
